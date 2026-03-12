@@ -316,49 +316,64 @@ The diagram below shows all hardware connections between the microcontroller, se
 ## 📁 Project Structure
 
 ```
-AI-Circular-Waste-Intelligence-System/
-│
+├── docker-compose.yml
+├── LICENSE
 ├── README.md
-├── requirements.txt
-│
-├── docs/
-│   ├── system_architecture.png        ← Full system architecture diagram
-│   ├── workflow_diagram.png
-│   └── hardware_setup.png
-│
-├── hardware/
-│   ├── components_list.md
-│   ├── sensor_connections.md
-│   └── circuit_diagram.jpeg           ← Hardware wiring / circuit diagram
-│
-├── firmware/
-│   └── esp32/
-│
-├── backend/
-│   ├── api_server.py
-│   ├── route_optimizer.py
-│   └── database_schema.md
-│
+├── STRUCTURE.md
 ├── ai_service/
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── requirements.txt
 │   ├── train_trashnet.py
-│   └── yolo_classifier.py
-│
-├── simulator/
-│   ├── smart_bin_simulator.py
-│   ├── image_event_simulator.py
-│   └── truck_simulator.py
-│
+│   ├── train_waste_classifier_yolov8.py
+│   ├── train_waste_yolov8.py
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   └── waste_classifier.py
+│   └── datasets/
+│       ├── trashnet.yaml
+│       └── DATASET/…
+├── backend/
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   │   ├── schemas.py
+│   │   ├── api/
+│   │   │   ├── router.py
+│   │   │   └── routes/…
+│   │   ├── core/
+│   │   │   └── config.py
+│   │   └── db/
+│   │       ├── base.py
+│   │       ├── models.py
+│   │       └── session.py
+│   └── services/…
 ├── devices/
-│   ├── raspi_waste_classifier/
-│   └── truck_gps_tracker/
-│
+│   ├── mqtt_backend/…
+│   ├── raspi_waste_classifier/…
+│   └── truck_gps_tracker/…
+├── firmware/
+│   └── esp32/smart_waste_bin/
 ├── frontend/
-│   └── index.html
-│
-└── dashboard/
-    ├── app.py
-    ├── charts.py
-    └── map_visualization.py
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── mockData.js
+│   ├── package.json
+│   ├── README.md
+│   ├── server.js
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   ├── images/
+│   └── src/…
+├── infra/
+│   └── mosquitto/
+├── sensorsTesting/…
+├── simulator/…
 ```
 
 ---

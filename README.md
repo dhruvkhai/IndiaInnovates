@@ -1,245 +1,175 @@
-# AI-Driven Circular Waste Intelligence System
+## Smart Waste Management System (IndiaInnovates)
 
-## Smart Waste Management Using AI, IoT, and Intelligent Route Optimization
+Full‑stack, IoT‑driven **Smart Waste Management** platform built for the **IndiaInnovates hackathon**.  
+It simulates and integrates:
 
----
-
-# Overview
-
-Urban cities generate massive amounts of municipal waste every day. However, traditional waste management systems rely heavily on **manual monitoring and fixed garbage collection routes**, which often results in overflowing bins, inefficient waste collection, and increased environmental pollution.
-
-The **AI-Driven Circular Waste Intelligence System** is a smart waste management platform that combines **Artificial Intelligence, IoT sensors, and route optimization algorithms** to create a data-driven waste collection ecosystem.
-
-The system automatically detects and classifies waste using computer vision, monitors bin fill levels in real time, and dynamically optimizes garbage collection routes. This enables municipalities to reduce operational costs, minimize environmental impact, and improve waste management efficiency.
+- **Smart bins** with multiple sensors (ultrasonic, load cell, IR, MQ135 gas, DHT11)
+- **ESP32 firmware** and **MQTT** telemetry
+- **Raspberry Pi camera + YOLOv8** waste classification
+- **FastAPI + PostgreSQL** backend (alerts, rewards, route optimization)
+- **Raspberry Pi GPS tracker** for garbage trucks
+- **Municipal web dashboard** (static HTML/CSS) served via Docker
 
 ---
 
-# Problem Statement
+## Tech stack
 
-Urban waste management systems face several critical challenges:
+- **Backend API**: Python **FastAPI** (`backend/`)
+- **Database**: **PostgreSQL** (via Docker)
+- **Message broker**: **MQTT** (Eclipse Mosquitto)
+- **AI models / services**:
+  - **YOLOv8** microservice (`ai_service/`)
+  - Raspberry Pi **camera classifier** (`devices/raspi_waste_classifier/`)
+  - YOLOv8 **training script** for TrashNet (`ai_service/train_trashnet.py`)
+- **IoT / devices**:
+  - ESP32 firmware (`firmware/esp32/…`)
+  - Sensor test sketches (`sensorsTesting/`)
+  - Truck GPS tracker (`devices/truck_gps_tracker/`)
+  - MQTT backend subscriber (`devices/mqtt_backend/`)
+- **Simulation**: Python scripts for bin + truck + image events (`simulator/`)
+- **Frontend dashboard**: Static HTML/CSS/JS dashboard (`frontend/index.html`) served by **nginx**
 
-* Lack of waste segregation at the source
-* Overflowing garbage bins in public spaces
-* Fixed garbage collection routes regardless of bin status
-* High operational costs and fuel consumption
-* Increased landfill waste and environmental pollution
-
-Without intelligent monitoring systems, municipal authorities cannot make **real-time, data-driven decisions**, leading to inefficient and reactive waste management operations.
-
----
-
-# Proposed Solution
-
-The proposed system introduces a **smart circular waste intelligence platform** powered by **Artificial Intelligence and Internet of Things (IoT)** technologies.
-
-The system integrates **smart waste bins, AI-based waste detection, cloud data processing, and route optimization** to transform traditional waste collection into an intelligent, automated process.
-
-## Key Features
-
-* Smart waste bins equipped with sensors and cameras
-* AI-based waste classification using computer vision
-* Real-time bin fill-level monitoring
-* Cloud-based waste data collection and processing
-* Intelligent garbage truck route optimization
-* Interactive monitoring dashboard for city authorities
-
-This solution enables cities to move from **manual waste collection to predictive, data-driven waste management**.
+See `STRUCTURE.md` for a detailed folder map.
 
 ---
 
-# System Architecture
+## Architecture overview
 
-The system consists of four main layers:
+- **ESP32 Smart Bin**
+  - Reads: ultrasonic (fill), HX711 (weight), IR (insertion), MQ135 (gas), DHT11 (temp/humidity)
+  - Publishes MQTT telemetry to: `bins/<BIN_ID>/telemetry`
+  - Or POSTs directly to backend: `POST /bin-data`
 
-### 1. Smart Waste Bin (IoT Device)
+- **Backend (FastAPI, `backend/app`)**
+  - Ingests MQTT telemetry and HTTP `/bin-data`
+  - Stores data in Postgres tables: `bins`, `sensor_readings`, `classification_results`, `alerts`, `citizens`, `reward_transactions`, `truck_locations`
+  - Triggers alerts when bin fill level or gas exceed thresholds
+  - Exposes APIs:
+    - `/bins`, `/telemetry`, `/alerts`, `/classifications`
+    - `/bin-data`, `/waste-classification`, `/routes/optimize`, `/trucks/location`
+    - `/rewards/*` for citizen reward system
 
-Smart bins are equipped with sensors and a camera to detect waste insertion, measure bin fill level, and capture images for waste classification.
+- **AI Waste Classification**
+  - `ai_service/` YOLOv8 microservice:
+    - `POST /classify/upload` – image upload
+    - `POST /classify/url` – classify by image URL
+  - `devices/raspi_waste_classifier/`:
+    - Captures image from Pi camera on `POST /classify?bin_id=…`
+    - Saves JPEG to disk and POSTs result to backend `/waste-classification`
 
-### 2. Edge Processing Layer
+- **Route optimization**
+  - `backend/app/services/route_optimization.py`: Dijkstra‑based route planning over full bins
+  - `POST /routes/optimize` – returns ordered bin list + total distance
+  - `simulate_truck_positions()` helps generate time‑stepped truck waypoints
 
-A Raspberry Pi or microcontroller processes sensor data and runs the AI waste classification model locally.
+- **Truck GPS tracking**
+  - `devices/truck_gps_tracker/` on Raspberry Pi with NEO‑6M GPS
+  - Reads NMEA from serial, parses lat/lon, every 10s POSTs to backend:
+    - Repo mode: `POST /trucks/location`
 
-### 3. Cloud Backend
-
-The cloud backend collects bin data, stores it in a database, and calculates optimized garbage collection routes using route optimization algorithms.
-
-### 4. Monitoring Dashboard
-
-A web-based dashboard visualizes real-time waste data, bin status, and optimized truck routes for municipal authorities.
-
----
-
-# Technologies Used
-
-## Programming
-
-* Python
-
-## Artificial Intelligence
-
-* TensorFlow
-* OpenCV
-* MobileNetV2
-
-## IoT Hardware
-
-* Raspberry Pi
-* ESP32
-
-## Backend
-
-* Flask API
-* NetworkX (Route Optimization)
-
-## Data Visualization
-
-* Streamlit
-* Plotly
-
-## Database
-
-* Firebase / JSON Simulation
+- **Dashboard**
+  - `frontend/index.html` – rich municipal dashboard using mock data (and can be wired to backend APIs)
+  - Served by nginx container as `frontend` service
 
 ---
 
-# Hardware Components
+## Running the full system with Docker
 
-| Component         | Purpose                                    |
-| ----------------- | ------------------------------------------ |
-| Raspberry Pi      | Edge processing and device control         |
-| Camera Module     | Capture waste images for AI classification |
-| Ultrasonic Sensor | Detect bin fill level                      |
-| Load Cell + HX711 | Measure waste weight                       |
-| IR Sensor         | Detect waste insertion                     |
-| GPS Module        | Track garbage truck location               |
+### 1. Prerequisites
 
----
+- Docker Desktop installed and running
 
-# System Workflow
+### 2. Start all services
 
-1. Citizen disposes waste into the smart bin
-2. IR sensor detects waste insertion
-3. Camera captures an image of the waste
-4. AI model classifies the waste type
-5. Sensors measure bin fill level and weight
-6. Data is transmitted to the cloud backend
-7. Route optimization algorithm identifies bins requiring collection
-8. Garbage truck receives optimized collection route
-9. Monitoring dashboard displays real-time waste data
+From the project root (`india/`):
 
----
-
-# Project Structure
-
-```
-AI-Circular-Waste-Intelligence-System
-
-├── README.md
-├── requirements.txt
-│
-├── docs
-│   ├── system_architecture.png
-│   ├── workflow_diagram.png
-│   └── hardware_setup.png
-│
-├── hardware
-│   ├── components_list.md
-│   ├── sensor_connections.md
-│   └── circuit_diagram.png
-│
-├── edge-device
-│   ├── sensor_reader.py
-│   ├── camera_capture.py
-│   ├── waste_detection.py
-│   └── send_data_to_cloud.py
-│
-├── ai-model
-│   ├── train_model.py
-│   ├── dataset_info.md
-│   ├── model_architecture.md
-│   └── waste_classifier.tflite
-│
-├── backend
-│   ├── api_server.py
-│   ├── route_optimizer.py
-│   └── database_schema.md
-│
-├── dashboard
-│   ├── app.py
-│   ├── charts.py
-│   └── map_visualization.py
-│
+```bash
+cp .env.example .env      # Windows: Copy-Item .env.example .env
+docker compose up --build
 ```
 
----
+Services started:
 
-# Installation Guide
+- `postgres` – PostgreSQL database
+- `mosquitto` – MQTT broker
+- `backend` – FastAPI + SQLAlchemy + MQTT ingest
+- `ai-service` – YOLOv8 microservice
+- `frontend` – nginx serving the HTML dashboard
+- `mqtt-backend` – paho‑mqtt subscriber (alerts) running in Docker
 
-### Clone the Repository
+### 3. URLs
 
-```
-git clone https://github.com/yourusername/ai-circular-waste-intelligence-system.git
-```
-
-### Navigate to the Project Directory
-
-```
-cd ai-circular-waste-intelligence-system
-```
-
-### Install Dependencies
-
-```
-pip install -r requirements.txt
-```
-
-### Run Backend Server
-
-```
-python backend/api_server.py
-```
-
-### Launch Dashboard
-
-```
-streamlit run dashboard/app.py
-```
+- **Backend API / docs**: `http://localhost:8000/docs`
+- **Frontend dashboard**: `http://localhost:5173`
+- **MQTT broker**: `mqtt://localhost:1883`
 
 ---
 
-# Dashboard Features
+## Local modules (without Docker)
 
-The monitoring dashboard provides:
+Each module can also be run locally for development:
 
-* Real-time smart bin status
-* Waste type distribution analytics
-* Map visualization of bin locations
-* Optimized garbage collection routes
-* Waste generation statistics
+- **Backend** (`backend/`)
+  - `pip install -r requirements.txt`
+  - `uvicorn app.main:app --reload --port 8000`
+
+- **AI service** (`ai_service/`)
+  - `pip install -r requirements.txt`
+  - `uvicorn app.main:app --reload --port 9000`
+
+- **Simulators** (`simulator/`)
+  - `pip install -r requirements.txt`
+  - Smart bins → `python smart_bin_simulator.py --bins 6 --interval 3`
+  - Image AI events → `python image_event_simulator.py --bin-id BIN_001 --image-url https://…`
+  - Truck locations → `python truck_simulator.py --interval 5`
+
+- **MQTT backend only** (`devices/mqtt_backend/`)
+  - `pip install -r requirements.txt`
+  - `python mqtt_backend.py`
+
+- **Raspberry Pi camera classifier** (`devices/raspi_waste_classifier/`)
+  - `pip install -r requirements.txt`
+  - `uvicorn main:app --host 0.0.0.0 --port 9001`
+
+- **Truck GPS tracker** (`devices/truck_gps_tracker/`)
+  - `pip install -r requirements.txt`
+  - `python main.py --truck-id TRUCK_01 --serial /dev/serial0 --baud 9600 --backend-mode repo`
 
 ---
 
-# Expected Impact
+## ESP32 firmware & sensor testing
 
-The AI-Driven Circular Waste Intelligence System enables cities to:
+- **Main firmware**: `firmware/esp32/smart_waste_bin/smart_waste_bin.ino`
+  - Connects to WiFi
+  - Reads all sensors and POSTs JSON to backend or publishes to MQTT
 
-* Improve waste segregation efficiency
-* Reduce landfill waste
-* Optimize garbage collection routes
-* Lower fuel consumption and operational costs
-* Promote sustainable smart city development
+- **Individual sensor test sketches** (`sensorsTesting/`):
+  - `hc_sr04_test.ino` – HC‑SR04 ultrasonic
+  - `hx711_test.ino` – load cell
+  - `ir_sensor_test.ino` – IR proximity
+  - `mq135_test.ino` – MQ135 gas
+  - `dht11_test.ino` – DHT11 temperature/humidity
 
----
-
-# Future Improvements
-
-* AI prediction of waste generation trends
-* Automated robotic waste sorting systems
-* Integration with large-scale smart city IoT infrastructure
-* Citizen reward systems for responsible waste segregation
+Upload these from Arduino IDE to validate hardware before running the full firmware.
 
 ---
 
-# License
+## Typical data flow
 
-MIT License
+1. ESP32 bin or `simulator/smart_bin_simulator.py` sends telemetry to MQTT or `POST /bin-data`.
+2. `backend` ingests the data, stores it in Postgres, and raises alerts for high fill level / gas.
+3. Raspberry Pi camera (`raspi_waste_classifier`) captures waste images and POSTs classifications to `/waste-classification`.
+4. `devices/truck_gps_tracker` periodically POSTs truck GPS positions to `/trucks/location`.
+5. `backend/app/services/route_optimization.py` computes an optimal route for trucks to collect from full bins.
+6. `frontend/index.html` visualizes bins, trucks, alerts, and statistics for municipal operators.
+
+---
+
+## Hackathon notes
+
+- This project is designed for **demonstrating an end‑to‑end, AI‑powered smart waste ecosystem**:
+  - IoT devices (ESP32, sensors)
+  - Edge AI (Raspberry Pi + camera)
+  - Cloud backend (FastAPI + Postgres + MQTT)
+  - Smart routing and monitoring dashboard
+- Many pieces are modular and can be run **independently** for demos (only simulators + backend + dashboard are required to show the flow). 

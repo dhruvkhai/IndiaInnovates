@@ -1,0 +1,33 @@
+#
+# TrashNet (example) in YOLO format for Ultralytics YOLOv8.
+#
+# IMPORTANT:
+# - TrashNet is commonly distributed as image folders by class.
+# - YOLOv8 training expects YOLO detection labels: one .txt per image with bbox annotations.
+# - If you only have image-level class labels (classification), you must either:
+#   (a) use a classification trainer instead of detection, or
+#   (b) create bounding boxes (manual labeling or auto-labeling), then convert to YOLO.
+#
+# This YAML is a template for a *detection* dataset in YOLO format.
+#
+
+# Root directory of the dataset.
+# This is resolved relative to THIS yaml file, so by default it points to:
+# `india/ai_service/datasets/trashnet_yolo/`
+path: trashnet_yolo
+
+# Relative paths from `path:`
+train: images/train
+val: images/val
+test: images/test
+
+nc: 5
+
+# Waste classes required by the project
+names:
+  0: plastic
+  1: organic
+  2: metal
+  3: paper
+  4: hazardous
+

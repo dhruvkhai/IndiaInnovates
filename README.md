@@ -4,7 +4,7 @@
 
 ---
 
-## Overview
+# Overview
 
 Urban cities generate massive amounts of municipal waste every day. However, traditional waste management systems rely heavily on **manual monitoring and fixed garbage collection routes**, which often results in overflowing bins, inefficient waste collection, and increased environmental pollution.
 
@@ -18,11 +18,11 @@ The system automatically detects and classifies waste using computer vision, mon
 
 Urban waste management systems face several critical challenges:
 
-• Lack of waste segregation at the source
-• Overflowing garbage bins in public spaces
-• Fixed garbage collection routes regardless of bin status
-• High operational costs and fuel consumption
-• Increased landfill waste and environmental pollution
+* Lack of waste segregation at the source
+* Overflowing garbage bins in public spaces
+* Fixed garbage collection routes regardless of bin status
+* High operational costs and fuel consumption
+* Increased landfill waste and environmental pollution
 
 Without intelligent monitoring systems, municipal authorities cannot make **real-time, data-driven decisions**, leading to inefficient and reactive waste management operations.
 
@@ -34,22 +34,20 @@ The proposed system introduces a **smart circular waste intelligence platform** 
 
 The system integrates **smart waste bins, AI-based waste detection, cloud data processing, and route optimization** to transform traditional waste collection into an intelligent, automated process.
 
-### Key Features
+## Key Features
 
-• Smart waste bins equipped with sensors and cameras
-• AI-based waste classification using computer vision
-• Real-time bin fill-level monitoring
-• Cloud-based waste data collection and processing
-• Intelligent garbage truck route optimization
-• Interactive monitoring dashboard for city authorities
+* Smart waste bins equipped with sensors and cameras
+* AI-based waste classification using computer vision
+* Real-time bin fill-level monitoring
+* Cloud-based waste data collection and processing
+* Intelligent garbage truck route optimization
+* Interactive monitoring dashboard for city authorities
 
 This solution enables cities to move from **manual waste collection to predictive, data-driven waste management**.
 
 ---
 
 # System Architecture
-
-![System Architecture](docs/system_architecture.png)
 
 The system consists of four main layers:
 
@@ -73,34 +71,34 @@ A web-based dashboard visualizes real-time waste data, bin status, and optimized
 
 # Technologies Used
 
-### Programming
+## Programming
 
-Python
+* Python
 
-### Artificial Intelligence
+## Artificial Intelligence
 
-TensorFlow
-OpenCV
-MobileNetV2
+* TensorFlow
+* OpenCV
+* MobileNetV2
 
-### IoT Hardware
+## IoT Hardware
 
-Raspberry Pi
-ESP32
+* Raspberry Pi
+* ESP32
 
-### Backend
+## Backend
 
-Flask API
-NetworkX (Route Optimization)
+* Flask API
+* NetworkX (Route Optimization)
 
-### Data Visualization
+## Data Visualization
 
-Streamlit
-Plotly
+* Streamlit
+* Plotly
 
-### Database
+## Database
 
-Firebase / JSON Simulation
+* Firebase / JSON Simulation
 
 ---
 
@@ -119,15 +117,15 @@ Firebase / JSON Simulation
 
 # System Workflow
 
-1️⃣ Citizen disposes waste into the smart bin
-2️⃣ IR sensor detects waste insertion
-3️⃣ Camera captures an image of the waste
-4️⃣ AI model classifies the waste type
-5️⃣ Sensors measure bin fill level and weight
-6️⃣ Data is transmitted to the cloud backend
-7️⃣ Route optimization algorithm identifies bins requiring collection
-8️⃣ Garbage truck receives optimized collection route
-9️⃣ Monitoring dashboard displays real-time waste data
+1. Citizen disposes waste into the smart bin
+2. IR sensor detects waste insertion
+3. Camera captures an image of the waste
+4. AI model classifies the waste type
+5. Sensors measure bin fill level and weight
+6. Data is transmitted to the cloud backend
+7. Route optimization algorithm identifies bins requiring collection
+8. Garbage truck receives optimized collection route
+9. Monitoring dashboard displays real-time waste data
 
 ---
 
@@ -171,9 +169,6 @@ AI-Circular-Waste-Intelligence-System
 │   ├── charts.py
 │   └── map_visualization.py
 │
-└── demo
-    ├── demo_video_link.md
-    └── example_data.json
 ```
 
 ---
@@ -216,35 +211,35 @@ streamlit run dashboard/app.py
 
 The monitoring dashboard provides:
 
-• Real-time smart bin status
-• Waste type distribution analytics
-• Map visualization of bin locations
-• Optimized garbage collection routes
-• Waste generation statistics
+* Real-time smart bin status
+* Waste type distribution analytics
+* Map visualization of bin locations
+* Optimized garbage collection routes
+* Waste generation statistics
 
 ---
+
 # Expected Impact
 
 The AI-Driven Circular Waste Intelligence System enables cities to:
 
-• Improve waste segregation efficiency
-• Reduce landfill waste
-• Optimize garbage collection routes
-• Lower fuel consumption and operational costs
-• Promote sustainable smart city development
+* Improve waste segregation efficiency
+* Reduce landfill waste
+* Optimize garbage collection routes
+* Lower fuel consumption and operational costs
+* Promote sustainable smart city development
 
 ---
 
 # Future Improvements
 
-• AI prediction of waste generation trends
-• Automated robotic waste sorting systems
-• Integration with large-scale smart city IoT infrastructure
-• Citizen reward systems for responsible waste segregation
+* AI prediction of waste generation trends
+* Automated robotic waste sorting systems
+* Integration with large-scale smart city IoT infrastructure
+* Citizen reward systems for responsible waste segregation
 
 ---
 
 # License
 
 MIT License
-

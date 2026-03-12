@@ -248,7 +248,7 @@ Measures the distance between the sensor and the waste surface to determine the 
 
 The diagram below shows all hardware connections between the microcontroller, sensors, and communication modules.
 
-![Circuit Diagram](hardware/circuit_diagram.jpeg)
+![Circuit Diagram](circuit_diagram.jpeg)
 
 > *Wiring connections: Arduino UNO as the central controller connected to HC-SR04 Ultrasonic Sensor, Load Cell + HX711 amplifier, IR Sensor, Camera Module, NEO-6M GPS Module, ESP8266 Wi-Fi Module, and Power Rails via breadboard.*
 

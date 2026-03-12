@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-smart_waste}
+      POSTGRES_USER: ${POSTGRES_USER:-smart_waste}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-smart_waste}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./infra/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - ./.env
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      MQTT_HOST: ${MQTT_HOST:-mosquitto}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      AI_SERVICE_URL: ${AI_SERVICE_URL:-http://ai-service:9000}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      - postgres
+      - mosquitto
+
+  ai-service:
+    build:
+      context: ./ai_service
+    env_file:
+      - ./.env
+    environment:
+      AI_SERVICE_PORT: ${AI_SERVICE_PORT:-9000}
+      YOLO_MODEL_PATH: ${YOLO_MODEL_PATH:-./models/yolov8n.pt}
+    ports:
+      - "${AI_SERVICE_PORT:-9000}:9000"
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+

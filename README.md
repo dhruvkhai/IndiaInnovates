@@ -1,4 +1,4 @@
-# 🗑️ AI-Driven Circular Waste Intelligence System
+# AI-powered Smart Waste Management System
 
 > **Smart Waste Management Using AI, IoT, and Intelligent Route Optimization**
 

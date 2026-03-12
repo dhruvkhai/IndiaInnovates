@@ -1,351 +1,417 @@
-# AI-Driven Circular Waste Intelligence System
+AI-Driven Circular Waste Intelligence System
+Smart Waste Management using AI, IoT and Intelligent Route Optimization
 
-## Smart Waste Management Using AI, IoT, and Intelligent Route Optimization
+An AI + IoT based Smart Waste Management Platform that monitors waste bins, classifies waste using computer vision, and optimizes garbage truck routes using real-time data.
 
-A full-stack **AI + IoT based Smart Waste Management Platform** that monitors waste bins, classifies waste using computer vision, and optimizes garbage truck routes using real-time data.
+The system integrates:
 
-The system integrates **smart bins, edge AI, cloud backend, route optimization algorithms, and a municipal monitoring dashboard**.
+Smart IoT waste bins
 
----
+AI-based waste classification
 
-# Overview
+Real-time cloud communication
 
-Urban cities generate massive amounts of municipal waste every day. However, traditional waste management systems rely heavily on **manual monitoring and fixed garbage collection routes**, which often results in overflowing bins, inefficient waste collection, and increased environmental pollution.
+Intelligent route optimization
 
-The **AI-Driven Circular Waste Intelligence System** introduces a **data-driven smart waste ecosystem** that automatically monitors bins, classifies waste, and optimizes garbage collection operations.
+Municipal monitoring dashboard
 
-This platform integrates:
+This creates a data-driven smart waste ecosystem for cities.
 
-• IoT smart bins with multiple sensors
-• AI-based waste classification using computer vision
-• Real-time telemetry using MQTT and REST APIs
-• Cloud backend for data processing and storage
-• Route optimization algorithms for garbage trucks
-• Municipal monitoring dashboard
+1. Overview
 
----
+Urban cities generate a large amount of municipal waste daily. However, most waste management systems still rely on:
 
-# Problem Statement
+Manual monitoring of bins
 
-Urban waste management systems face several critical challenges:
+Fixed garbage collection schedules
 
-* Lack of waste segregation at the source
-* Overflowing garbage bins in public areas
-* Fixed garbage collection routes regardless of bin status
-* High operational and fuel costs
-* Increased landfill waste and environmental pollution
+Lack of waste segregation
 
-Without intelligent monitoring systems, municipal authorities cannot make **real-time, data-driven decisions**, leading to inefficient waste management operations.
+These issues often lead to:
 
----
+Overflowing garbage bins
 
-# Proposed Solution
+Inefficient waste collection
 
-The proposed system introduces a **smart circular waste intelligence platform** powered by **Artificial Intelligence and Internet of Things (IoT)** technologies.
+Increased fuel consumption
 
-The platform transforms traditional waste management into an **automated, intelligent, and data-driven process**.
+Environmental pollution
 
-## Key Features
+The AI-Driven Circular Waste Intelligence System introduces a smart and automated waste management platform that continuously monitors waste bins, classifies waste using AI, and optimizes garbage collection routes.
 
-* Smart waste bins with multiple environmental sensors
-* AI-based waste classification using camera and YOLO model
-* Real-time telemetry using MQTT protocol
-* Cloud backend for data ingestion and processing
-* Intelligent garbage truck route optimization
-* Municipal monitoring dashboard for city operators
-* Simulation tools for testing the system without physical hardware
+2. Problem Statement
 
----
+Current urban waste management systems face several major challenges:
 
-# System Architecture
+Lack of waste segregation at the source
 
-The system consists of **five major components**.
+Overflowing garbage bins in public areas
 
-### 1. Smart Waste Bin (IoT Device)
+Fixed garbage collection routes regardless of bin status
 
-Smart bins use sensors and microcontrollers to monitor bin status.
+High operational and fuel costs
 
-Sensors include:
+Large amounts of waste going to landfills
 
-* Ultrasonic Sensor → bin fill level
-* Load Cell + HX711 → waste weight
-* IR Sensor → waste insertion detection
-* MQ135 → gas detection
-* DHT11 → temperature & humidity
+Limited real-time monitoring for municipal authorities
 
-Firmware runs on **ESP32**, sending telemetry to the backend.
+Because of these limitations, city administrators cannot make data-driven decisions, leading to inefficient waste management.
 
----
+3. Proposed Solution
 
-### 2. Edge AI Waste Classification
+The proposed system introduces a Smart Circular Waste Intelligence Platform powered by:
 
-A **Raspberry Pi camera module** captures images of disposed waste.
+Artificial Intelligence (AI)
 
-The images are processed using **YOLOv8 computer vision model** to classify waste types such as:
+Internet of Things (IoT)
 
-* Plastic
-* Paper
-* Metal
-* Organic
-* Hazardous
+Cloud Computing
 
-Classification results are sent to the backend.
+Route Optimization Algorithms
 
----
+The system converts traditional waste management into an automated, intelligent, and real-time monitored ecosystem.
 
-### 3. Cloud Backend
+4. Key Features
 
-The backend is built using **FastAPI** and processes real-time telemetry.
+The system provides the following major features:
 
-Responsibilities include:
+Smart Waste Bins equipped with multiple sensors to monitor bin status
 
-* Receiving sensor telemetry from bins
-* Storing data in PostgreSQL database
-* Triggering alerts when bins are full or gas levels are high
-* Storing waste classification results
-* Computing optimal garbage truck routes
+AI-Based Waste Classification using computer vision models
 
----
+Real-Time Data Transmission using MQTT communication protocol
 
-### 4. Route Optimization System
+Cloud Backend Processing for storing and analyzing waste data
+
+Intelligent Garbage Truck Route Optimization
+
+Municipal Monitoring Dashboard for real-time visualization
+
+Simulation Tools for testing the system without physical hardware
+
+5. System Architecture
+
+The complete system consists of five main components.
+
+5.1 Smart Waste Bin (IoT Device)
+
+Smart waste bins are equipped with sensors and a microcontroller that continuously monitor bin conditions.
+
+Sensors Used
+
+Ultrasonic Sensor – measures bin fill level
+
+Load Cell + HX711 – measures waste weight
+
+IR Sensor – detects waste insertion
+
+MQ135 Gas Sensor – detects harmful gases
+
+DHT11 Sensor – measures temperature and humidity
+
+Controller
+
+ESP32 microcontroller processes sensor data
+
+Sends telemetry data to the backend server
+
+5.2 Edge AI Waste Classification
+
+A camera module connected to a Raspberry Pi captures images of waste placed in the bin.
+
+The images are processed using a YOLOv8 computer vision model.
+
+Waste Categories Detected
+
+Plastic
+
+Paper
+
+Metal
+
+Organic waste
+
+Hazardous waste
+
+The classification results are transmitted to the cloud backend.
+
+5.3 Cloud Backend
+
+The cloud backend is built using FastAPI.
+
+Responsibilities of Backend
+
+Receiving sensor data from smart bins
+
+Processing waste classification results
+
+Storing data in a PostgreSQL database
+
+Triggering alerts when:
+
+Bin is full
+
+Gas level is high
+
+Running route optimization algorithms for garbage trucks
+
+5.4 Route Optimization System
 
 Garbage trucks should only visit bins that require collection.
 
-The backend uses **graph-based shortest path algorithms** to calculate optimized routes.
+The system uses graph-based shortest path algorithms to generate optimal routes.
 
-Endpoint example:
-
-```
+Example API Endpoint
 POST /routes/optimize
-```
+Output
 
-Returns:
+The API returns:
 
-* list of bins requiring pickup
-* optimized route order
-* estimated travel distance
+List of bins requiring pickup
 
----
+Optimized collection route
 
-### 5. Monitoring Dashboard
+Estimated travel distance
 
-A municipal web dashboard visualizes system data including:
+This significantly reduces fuel consumption and travel time.
 
-* smart bin locations
-* waste levels
-* waste classification statistics
-* garbage truck positions
-* alerts and notifications
+5.5 Monitoring Dashboard
 
-The dashboard helps authorities monitor waste collection operations in real time.
+A web-based municipal dashboard provides real-time monitoring.
 
----
+Dashboard Capabilities
 
-# Technologies Used
+Visualizing smart bin locations on a map
 
-## Programming
+Monitoring waste fill levels
 
-* Python
+Viewing waste classification statistics
 
-## Backend
+Tracking garbage truck positions via GPS
 
-* FastAPI
-* SQLAlchemy
-* PostgreSQL
+Receiving alerts and notifications
 
-## IoT Communication
+This enables real-time operational decision making.
 
-* MQTT (Eclipse Mosquitto)
+6. Technologies Used
+Programming Language
 
-## Artificial Intelligence
+Python
 
-* YOLOv8
-* OpenCV
-* TensorFlow / PyTorch
+Backend Technologies
 
-## IoT Hardware
+FastAPI
 
-* ESP32
-* Raspberry Pi
-* Ultrasonic Sensor (HC-SR04)
-* Load Cell + HX711
-* IR Sensor
-* MQ135 Gas Sensor
-* DHT11
+SQLAlchemy
 
-## Visualization
+PostgreSQL
 
-* HTML / CSS / JavaScript
-* Streamlit / Plotly
+IoT Communication
 
-## Containerization
+MQTT (Eclipse Mosquitto)
 
-* Docker
-* Docker Compose
+Artificial Intelligence
 
----
+YOLOv8
 
-# Hardware Components
+OpenCV
 
-| Component         | Purpose                         |
-| ----------------- | ------------------------------- |
-| ESP32             | Smart bin microcontroller       |
-| Raspberry Pi      | Edge AI processing              |
-| Camera Module     | Waste image capture             |
-| Ultrasonic Sensor | Bin fill level                  |
-| Load Cell + HX711 | Waste weight                    |
-| IR Sensor         | Waste insertion detection       |
-| MQ135 Sensor      | Gas detection                   |
-| DHT11             | Temperature & humidity          |
-| GPS Module        | Garbage truck location tracking |
+TensorFlow / PyTorch
 
----
+IoT Hardware
 
-# Hardware Wiring Diagram
+ESP32
 
-The following diagram shows the wiring connections between the sensors and the microcontroller.
+Raspberry Pi
 
-![Wiring Diagram](hardware/circuit_diagram.png)
+Sensors
 
----
+Ultrasonic Sensor (HC-SR04)
 
-# System Workflow
+Load Cell + HX711
 
-1. Citizen disposes waste into smart bin
-2. IR sensor detects waste insertion
-3. Camera captures waste image
-4. AI model classifies waste type
-5. Sensors measure bin fill level and weight
-6. Telemetry is sent to backend via MQTT / REST API
-7. Backend stores data in PostgreSQL
-8. Route optimizer identifies bins requiring pickup
-9. Garbage truck receives optimized route
-10. Dashboard displays system data in real time
+IR Sensor
 
----
+MQ135 Gas Sensor
 
-# Project Structure
+DHT11
 
-```
+Visualization Tools
+
+HTML
+
+CSS
+
+JavaScript
+
+Streamlit / Plotly
+
+Containerization
+
+Docker
+
+Docker Compose
+
+7. Hardware Components
+Component	Purpose
+ESP32	Smart bin microcontroller
+Raspberry Pi	Edge AI processing
+Camera Module	Waste image capture
+Ultrasonic Sensor	Bin fill level detection
+Load Cell + HX711	Waste weight measurement
+IR Sensor	Waste insertion detection
+MQ135 Sensor	Gas detection
+DHT11	Temperature & humidity monitoring
+GPS Module	Garbage truck location tracking
+8. Hardware Wiring Diagram
+
+The following diagram represents the connection between sensors and the ESP32 microcontroller.
+
+[Ultrasonic Sensor]  → ESP32
+[Load Cell + HX711]  → ESP32
+[IR Sensor]          → ESP32
+[MQ135 Gas Sensor]   → ESP32
+[DHT11 Sensor]       → ESP32
+
+The Raspberry Pi camera module is used separately for AI waste classification.
+
+9. System Workflow
+
+The system operates through the following sequence:
+
+Citizen disposes waste into the smart bin
+
+IR sensor detects waste insertion
+
+Camera captures image of the waste
+
+AI model classifies the waste type
+
+Sensors measure bin fill level and weight
+
+Sensor data is sent to the cloud backend via MQTT
+
+Backend stores data in PostgreSQL database
+
+Route optimizer identifies bins that require collection
+
+Garbage truck receives optimized route
+
+Dashboard displays real-time system data
+
+10. Project Structure
 AI-Circular-Waste-Intelligence-System
 
 ├── README.md
 ├── requirements.txt
-│
+
 ├── docs
 │   ├── system_architecture.png
 │   ├── workflow_diagram.png
 │   └── hardware_setup.png
-│
+
 ├── hardware
 │   ├── components_list.md
 │   ├── sensor_connections.md
 │   └── circuit_diagram.png
-│
+
 ├── firmware
 │   └── esp32/
-│
+
 ├── backend
 │   ├── api_server.py
 │   ├── route_optimizer.py
 │   └── database_schema.md
-│
+
 ├── ai_service
 │   ├── train_trashnet.py
 │   └── yolo_classifier.py
-│
+
 ├── simulator
 │   ├── smart_bin_simulator.py
 │   ├── image_event_simulator.py
 │   └── truck_simulator.py
-│
+
 ├── devices
 │   ├── raspi_waste_classifier
 │   └── truck_gps_tracker
-│
+
 ├── frontend
 │   └── index.html
-│
+
 └── dashboard
     ├── app.py
     ├── charts.py
     └── map_visualization.py
-```
+11. Running the System with Docker
 
----
+Start the complete platform using Docker:
 
-# Running the System with Docker
-
-### Start the entire platform
-
-```
 docker compose up --build
-```
+Services Started
 
-Services started:
+PostgreSQL Database
 
-* PostgreSQL database
-* MQTT broker
-* FastAPI backend
-* AI classification service
-* Dashboard frontend
+MQTT Broker
 
----
+FastAPI Backend
 
-# Local Development
+AI Classification Service
 
-### Run backend
+Monitoring Dashboard
 
-```
+12. Local Development
+Run Backend
 pip install -r requirements.txt
 uvicorn backend.app.main:app --reload
-```
-
-### Run simulators
-
-```
+Run Simulators
 python simulator/smart_bin_simulator.py
 python simulator/truck_simulator.py
-```
 
-These simulators generate **virtual sensor data and truck locations** without real hardware.
+The simulators generate virtual sensor data and truck GPS locations without requiring physical hardware.
 
----
+13. Dashboard Features
 
-# Dashboard Features
+The dashboard provides the following capabilities:
 
-The monitoring dashboard provides:
+Real-time smart bin monitoring
 
-* Real-time smart bin status
-* Waste type distribution analytics
-* Map visualization of bin locations
-* Optimized garbage collection routes
-* Garbage truck GPS tracking
-* Alerts for full bins or gas leaks
+Waste type distribution analytics
 
----
+Interactive map visualization
 
-# Expected Impact
+Optimized garbage truck route display
 
-The AI-Driven Circular Waste Intelligence System helps cities:
+GPS tracking of garbage trucks
 
-* Improve waste segregation efficiency
-* Reduce landfill waste
-* Optimize garbage collection routes
-* Lower fuel consumption and operational costs
-* Enable data-driven municipal decision making
+Alerts for full bins or gas leaks
 
----
+14. Expected Impact
 
-# Future Improvements
+The system provides several benefits for urban cities:
 
-* AI prediction of waste generation trends
-* Automated robotic waste sorting
-* Integration with smart city IoT infrastructure
-* Citizen reward system for proper waste segregation
+Improved waste segregation efficiency
 
----
+Reduced landfill waste
 
-# License
+Optimized garbage collection routes
+
+Lower fuel consumption and operational costs
+
+Data-driven decision making for municipalities
+
+15. Future Improvements
+
+Possible future extensions include:
+
+AI-based prediction of waste generation trends
+
+Robotic waste sorting systems
+
+Integration with smart city infrastructure
+
+Citizen reward systems for proper waste segregation
+
+16. License
 
 MIT License

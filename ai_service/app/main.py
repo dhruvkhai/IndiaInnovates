@@ -1,5 +1,9 @@
 import io
 import os
+<<<<<<< HEAD
+=======
+import random
+>>>>>>> dhruvBranch
 from typing import Any
 
 import httpx
@@ -32,11 +36,14 @@ class ClassifyUrlRequest(BaseModel):
     image_url: str
 
 
+<<<<<<< HEAD
 class WasteClassificationOut(BaseModel):
     waste_type: str
     confidence: float
 
 
+=======
+>>>>>>> dhruvBranch
 def _lazy_model():
     if getattr(app.state, "model", None) is not None:
         return app.state.model
@@ -53,6 +60,7 @@ def _lazy_model():
     return app.state.model
 
 
+<<<<<<< HEAD
 WASTE_TYPES = ("plastic", "organic", "metal", "paper", "hazardous")
 
 # COCO-ish heuristic hints (fallback only when using a generic pre-trained model).
@@ -164,6 +172,35 @@ def _run_yolo_on_image(img: Image.Image) -> dict[str, Any]:
                 "waste_class": _waste_class_3way_from_type(pred_name),
             }
 
+=======
+RECYCLE_HINTS = {"bottle", "can", "plastic", "cup", "paper", "cardboard", "glass", "tin"}
+BIO_HINTS = {"banana", "apple", "food", "bread", "vegetable", "fruit", "leaf"}
+HAZ_HINTS = {"battery", "syringe", "chemical", "medicine", "mask", "lighter"}
+
+
+def _map_detections_to_waste_class(labels: list[str]) -> tuple[str, float]:
+    lbls = {l.lower() for l in labels}
+    if lbls & HAZ_HINTS:
+        return "hazardous", 0.75
+    if lbls & RECYCLE_HINTS:
+        return "recyclable", 0.70
+    if lbls & BIO_HINTS:
+        return "biodegradable", 0.70
+    # Fallback: random but deterministic-ish for demo
+    choice = random.choice(["recyclable", "biodegradable", "hazardous"])
+    return choice, 0.55
+
+
+def _run_yolo_on_image(img: Image.Image) -> dict[str, Any]:
+    model = _lazy_model()
+    if model is None:
+        waste_class, conf = _map_detections_to_waste_class([])
+        return {"waste_class": waste_class, "confidence": conf, "detections": []}
+
+    results = model.predict(img, verbose=False)
+    r0 = results[0]
+
+>>>>>>> dhruvBranch
     names = getattr(r0, "names", {}) or {}
     boxes = getattr(r0, "boxes", None)
 
@@ -182,6 +219,7 @@ def _run_yolo_on_image(img: Image.Image) -> dict[str, Any]:
                 }
             )
 
+<<<<<<< HEAD
     # Prefer direct classification when the model is trained on our target waste classes.
     waste_names = {str(v).lower(): int(k) for k, v in dict(names).items()} if names else {}
     usable = [w for w in WASTE_TYPES if w in waste_names]
@@ -209,6 +247,11 @@ def _run_yolo_on_image(img: Image.Image) -> dict[str, Any]:
         "detections": detections,
         "waste_class": _waste_class_3way_from_type(str(best_waste_type)),
     }
+=======
+    waste_class, conf = _map_detections_to_waste_class(labels)
+    conf = max(conf, max([d.get("confidence") or 0 for d in detections], default=0.0))
+    return {"waste_class": waste_class, "confidence": float(conf), "detections": detections}
+>>>>>>> dhruvBranch
 
 
 @app.get("/health")
@@ -244,6 +287,7 @@ async def classify_url(payload: ClassifyUrlRequest):
     out = _run_yolo_on_image(img)
     return {"bin_id": payload.bin_id, "image_url": payload.image_url, **out}
 
+<<<<<<< HEAD
 
 @app.post("/classify/waste/upload", response_model=WasteClassificationOut)
 async def classify_waste_upload(file: UploadFile = File(...)):
@@ -279,3 +323,5 @@ async def classify_waste_url(image_url: str):
     out = _run_yolo_on_image(img)
     return {"waste_type": out["waste_type"], "confidence": out["confidence"]}
 
+=======
+>>>>>>> dhruvBranch

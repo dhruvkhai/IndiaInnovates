@@ -103,3 +103,42 @@ class TruckLocationOut(TruckLocationIn):
     id: int
     ts: datetime
 
+<<<<<<< HEAD
+=======
+
+# ========== IoT HTTP ingestion ==========
+
+
+class BinDataIn(BaseModel):
+    bin_id: str
+    fill_level: float
+    weight_kg: float
+    temperature_c: float
+    humidity_pct: float
+    gas_ppm: float
+    ts: datetime | None = None
+
+
+class WasteClassificationIn(BaseModel):
+    bin_id: str
+    waste_type: WasteClass
+    confidence: float
+    image_ref: str | None = None
+    ts: datetime | None = None
+
+
+class BinStatusOut(BaseModel):
+    bin_id: str
+    name: str | None
+    lat: float
+    lng: float
+    last_update: datetime | None
+    fill_level_pct: float | None
+    weight_kg: float | None
+    temperature_c: float | None
+    humidity_pct: float | None
+    gas_ppm: float | None
+    latest_waste_type: WasteClass | None = None
+    latest_waste_confidence: float | None = None
+
+>>>>>>> dhruvBranch

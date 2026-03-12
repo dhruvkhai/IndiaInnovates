@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
   Smart Waste Bin - ESP32 Firmware (Arduino C++)
   Sensors:
@@ -49,6 +50,9 @@
     GND -> GND
     DATA-> GPIO 4   (DHT_PIN) + 10K pull-up to 3.3V (often module includes it)
 */
+=======
+
+>>>>>>> dhruvBranch
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -59,8 +63,13 @@
 // ===================
 // USER CONFIG
 // ===================
+<<<<<<< HEAD
 static const char* WIFI_SSID     = "YOUR_WIFI_SSID";
 static const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD";
+=======
+static const char* WIFI_SSID     = "OnePlus 11R 5G";
+static const char* WIFI_PASSWORD = "mahakaleshwar";
+>>>>>>> dhruvBranch
 
 // Your backend endpoint (change this)
 static const char* BACKEND_URL = "http://192.168.1.50:8000/telemetry";

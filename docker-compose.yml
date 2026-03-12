@@ -18,6 +18,18 @@ services:
     volumes:
       - ./infra/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
 
+<<<<<<< HEAD
+=======
+  mqtt-backend:
+    build:
+      context: ./devices/mqtt_backend
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+    depends_on:
+      - mosquitto
+
+>>>>>>> dhruvBranch
   backend:
     build:
       context: ./backend
@@ -49,10 +61,15 @@ services:
   frontend:
     build:
       context: ./frontend
+<<<<<<< HEAD
     environment:
       VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000}
     ports:
       - "5173:5173"
+=======
+    ports:
+      - "5173:80"
+>>>>>>> dhruvBranch
     depends_on:
       - backend
 

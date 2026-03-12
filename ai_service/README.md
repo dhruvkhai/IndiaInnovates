@@ -6,6 +6,7 @@ Minimal microservice that accepts an image (upload or URL) and returns:
 - `confidence`: float
 - `detections`: raw model detections (starter shape)
 
+<<<<<<< HEAD
 It also exposes endpoints that return the required output shape:
 
 ```json
@@ -15,6 +16,8 @@ It also exposes endpoints that return the required output shape:
 }
 ```
 
+=======
+>>>>>>> dhruvBranch
 ## Run (Docker)
 
 From repo root:
@@ -33,6 +36,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 9000
 ```
 
+<<<<<<< HEAD
 ## API
 
 - `POST /classify/waste/upload` (multipart `file`)
@@ -78,3 +82,5 @@ The detection dataset YAML template is at `datasets/trashnet.yaml`.
 After training, set `YOLO_MODEL_PATH` to the produced weights (typically `runs-waste/yolov8-waste/weights/best.pt`)
 and restart the service.
 
+=======
+>>>>>>> dhruvBranch

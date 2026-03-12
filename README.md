@@ -75,7 +75,7 @@ The proposed system introduces a **smart circular waste intelligence platform** 
 
 The system consists of **eight interconnected layers** — from citizen interaction at the bin level, all the way to cloud processing, dashboard monitoring, and citizen incentives.
 
-![System Architecture](docs/system_architecture.png)
+![System Architecture](system_architecture.png)
 
 > *Full end-to-end system architecture: Citizen Interaction → Smart Bin IoT Layer → Edge Processing → AI Classification → Cloud Platform → Municipal Dashboard → Smart Collection Vehicles → Citizen Incentive System*
 

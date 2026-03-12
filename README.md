@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Waste Management System (AI + IoT Simulation)
 
 Full-stack starter project simulating **smart bins**, **MQTT telemetry**, **AI waste classification (YOLOv8)**, **municipal monitoring dashboard**, **route optimization**, and a **citizen reward system**.
@@ -51,3 +52,7 @@ You can run each module locally; see module READMEs:
 4. `backend/` stores classification results and updates stats/rewards.
 5. `frontend/` polls backend endpoints to visualize bin status, alerts, and stats.
 
+=======
+# IndiaInnovates
+This a hackathon 
+>>>>>>> afa38f174373ae3a9caf59e314c912d2b07f3fab
